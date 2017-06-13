@@ -1,7 +1,9 @@
-""""Contains borrowed code
+""""Contains borrowed code from tensorflow tutorials
+
 Here I download the wikipedia dump in my local machine, convert that into corpus and then into a zip file to run this program. Which means I can't run the entire program 
 together at the same time. Also this is a comparitively slow program as it is bottle-necked due to usage of python to read , prepare the tokens and getting vocabulary size.
 Anyone who has a better idea of doing this entire process is more than welcome to help"""
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
