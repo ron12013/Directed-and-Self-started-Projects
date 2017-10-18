@@ -1,2 +1,2 @@
 # Directed-and-Self-started-Projects
-This repository includes some projects that I was directed to do by my professor and projects that I have initiated on my own.
+This repository includes Projects that I worked on during my indepennt study under Professor Anna Rumshishky, also this will contain in future projects I will work on my own in NLP/Deep Learning area.
