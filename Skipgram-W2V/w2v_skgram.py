@@ -1,7 +1,4 @@
-""""
-Here I download the wikipedia dump in my local machine, convert that into corpus and then into a zip file to run this program. Which means I can't run the entire program 
-together at the same time. Also this is a comparitively slow program as it is bottle-necked due to usage of python to read , prepare the tokens and getting vocabulary size.
-"""
+#This is the solution to word2vec skipgram model on Wikipedia dump.
 
 from __future__ import absolute_import
 from __future__ import division
@@ -28,22 +25,21 @@ from six.moves import xrange
 import tensorflow as tf
 from gensim.corpora import WikiCorpus
 
+batch_size = 500
+embedding_size = 500  # Dimension of the embedding vector.
+skip_window = 2       # How many words to consider left and right.
+num_skips = 2         # How many times to reuse an input to generate a label.
+num_sampled = 200    # Number of negative examples to sample.
+valid_size = 26     # Random set of words to evaluate similarity on.
+valid_window = 200  # Only pick dev samples in the head of the distribution.
 tf.logging.set_verbosity(tf.logging.INFO)
-
-#Trying to learn and then implement Custom Data Readers to optimize the code by significant margin
-""""class SomeReader(io_ops.ReaderBase):
-    def __init__(self, name = None):
-        rr = gen_user_ops.some_reader(name = name)
-        super(SomeReader, self).__init__(rr)
-        
-ops.NotDifferentiable("SomeReader")"""
-        
              
 
 if __name__ == '__main__':
 
-
-# The function below changes the downloaded dump into corpus, where each line of the text file contains an article of Wikipedia
+# The function below is a script which changes the dump into Corpus, in a format where each line of the resulting text file 
+# will contain one wikiepdia article. It reads in the .bz2 file along with the text file where it will write to.
+# THIS IS AN OPTIONAL FUNCTION, YOU CAN IMPLEMENT IN A SEPERATE FILE, ITS MAIN IDEA IS TO GET THE CORPUS.
     def prepare_corpus():
         program = os.path.basename(sys.argv[0])
         logger = logging.getLogger(program)
@@ -75,37 +71,30 @@ if __name__ == '__main__':
     
     #filename = prepare_corpus()
     
-
     def read_data(filename):
 
-      """"with tf.gfile.GFile(filename, "r") as f:
+      with tf.gfile.GFile(filename, "r") as f:
         data = f.read().replace("\n", "<eos>").split()
 
-      return data"""
-      with zipfile.ZipFile(filename) as f:
-        data = tf.compat.as_str(f.read(f.namelist()[0])).split()
       return data
+      """with zipfile.ZipFile(filename) as f:
+        data = tf.compat.as_str(f.read(f.namelist()[0])).split()
+      return data"""
      
 
-    def build_vocab(filename): # maybe a redundant function
-      data = read_data(filename) 
 
-      counter = collections.Counter(data)
-      count_pairs = sorted(counter.items(), key=lambda x: (-x[1], x[0]))
-
-      words, _ = list(zip(*count_pairs))
-      word_to_id = dict(zip(words, range(len(words))))
-
-      return word_to_id
-
-    # Filename is the text file containing the corpus, extracted from the dump
-    words = read_data("prb1.zip") #(prepare_corpus())
+    # Filename is the text file containing the corpus, extracted from the dump. 
+    #The idea here is to get the size of the corpus by calling the read_data function.
+   
+    words = read_data(prepare_corpus())
     print('Data size is :', len(words))
 
 
     vocabulary_size = len(build_vocab(filename))
     print(vocabulary_size) #For self clarification
 
+#This function is the dataset buider, where each word is tokenized for better access. 
+# This function would be later called when we actually start calculating the embeddings
 
     def build_dataset(words, vocabulary_size):
       count = [['UNK', -1]]
@@ -134,7 +123,7 @@ if __name__ == '__main__':
 
     data_index = 0
 
-
+# This function deals with generating batches which would be used
   
     def generate_batch(batch_size, num_skips, skip_window):
       global data_index
@@ -166,30 +155,23 @@ if __name__ == '__main__':
 
     
 
-   
-
-    batch_size = 500
-    embedding_size = 500  # Dimension of the embedding vector.
-    skip_window = 2       # How many words to consider left and right.
-    num_skips = 2         # How many times to reuse an input to generate a label.
-
     # We pick a random validation set to sample nearest neighbors. Here we limit the
     # validation samples to the words that have a low numeric ID, which by
     # construction are also the most frequent.
-    valid_size = 26     # Random set of words to evaluate similarity on.
-    valid_window = 200  # Only pick dev samples in the head of the distribution.
+   
     #valid_examples = np.random.choice(valid_window, valid_size, replace=False)
     valid_examples = np.array(random.sample(range(valid_window), valid_size//2))
     valid_examples = np.append(valid_examples, random.sample(range(1000,1000+valid_window), valid_size//2))
-    num_sampled = 200    # Number of negative examples to sample.
+
 
     graph = tf.Graph()
 
     with graph.as_default(), tf.device('/cpu:0'):
 
-        # Input data.
+       #The line below defines
         train_inputs = tf.placeholder(tf.int32, shape=[batch_size])
         train_labels = tf.placeholder(tf.int32, shape=[batch_size, 1])
+        
         valid_dataset = tf.constant(valid_examples, dtype=tf.int32)
 
 
