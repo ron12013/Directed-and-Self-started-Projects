@@ -1,3 +1,4 @@
+#This file deals with loading the dataset and running the model from the file model.py and printing the results.
 import argparse
 import numpy as np
 import datetime
