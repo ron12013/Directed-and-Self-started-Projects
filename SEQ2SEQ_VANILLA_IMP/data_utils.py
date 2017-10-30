@@ -7,7 +7,7 @@ import tensorflow as tf
 
 def get_data(end=100, data_dir=""):
 
-    with open('text8.txt','r',encoding ='UTF8') as s:
+    with open('source.txt','r',encoding ='UTF8') as s:
         source = ''
       
         i = 0
@@ -18,13 +18,12 @@ def get_data(end=100, data_dir=""):
                 break
             source_line = re.sub(' +',' ',source_line)
             source_line = re.sub('\n',' ',source_line)
-            # target_line = re.sub(' +',' ',target_line)
-            # target_line = re.sub('\n',' ',target_line)
+        
             source += source_line
             # target += target_line
             i+=1
         source = list(source)
-        # target = list(target)
+        
         print(len(source))
         # print(len(target))
         # if len(source) != len(target):
