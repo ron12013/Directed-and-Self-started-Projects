@@ -1,3 +1,4 @@
+#This file contains the reading in of data from the text file
 import re
 import numpy as np
 import collections
