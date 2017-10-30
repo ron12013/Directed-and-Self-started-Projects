@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 # The function below is a script which changes the dump into Corpus, in a format where each line of the resulting text file 
 # will contain one wikiepdia article. It reads in the .bz2 file along with the text file where it will write to.
-# THIS IS AN OPTIONAL FUNCTION, YOU CAN IMPLEMENT IN A SEPERATE FILE, ITS MAIN IDEA IS TO GET THE CORPUS.
+# THIS IS AN OPTIONAL FUNCTION, YOU CAN IMPLEMENT IN A SEPERATE FILE, ITS MAIN JOB IS TO GET THE CORPUS.
     def prepare_corpus():
         program = os.path.basename(sys.argv[0])
         logger = logging.getLogger(program)
@@ -123,7 +123,9 @@ if __name__ == '__main__':
 
     data_index = 0
 
-# This function deals with generating batches which would be used
+# This function deals with generating batches which would be used later to calculate the cosine similarity. This function is 
+# provided in tensorflow tutorials, and a beginner need not worry about the details.
+# This function is provided in the tensorflow tutorials.
   
     def generate_batch(batch_size, num_skips, skip_window):
       global data_index
@@ -167,27 +169,47 @@ if __name__ == '__main__':
     graph = tf.Graph()
 
     with graph.as_default(), tf.device('/cpu:0'):
-
-       #The line below defines
+      
+      #####Enter code for placeholders and any other constants which would be used during the embedding matrix.####
+       # SOLUTION:
+        
+       #The line below defines the placeholders for the input and lables; namely the center words and
+       # the target words, these will have to be of type int as we need these for embedding _matrix
+        
         train_inputs = tf.placeholder(tf.int32, shape=[batch_size])
         train_labels = tf.placeholder(tf.int32, shape=[batch_size, 1])
         
         valid_dataset = tf.constant(valid_examples, dtype=tf.int32)
 
 
-            # Look up embeddings for inputs.
+        ####Enter code to define weights, which will be then put in a random distribution ranging from -1 to 1 ###
+        # The size of this matrix would be, Vocab_size * embed_size
+        # SOLUTION:
+        
         embeddings = tf.Variable(
             tf.random_uniform([vocabulary_size, embedding_size], -1.0, 1.0))
-            
+        ### Enter code to deine the inference which would look up from the embedding matrix, using the tensorflow embedding function    
+        # SOLUTION: 
+        
         embed = tf.nn.embedding_lookup(embeddings, train_inputs)
         print("The embed size would be: %s" %embed.get_shape().as_list()) # for self - clarrification
-
-        softmax_weights = tf.Variable(
+        
+        ### Enter code for forming weights and biases for the softmax loss. 
+        # Use the vocabulary_size , embedding_size, eep standard deviation as 1. 
+        # The weight is vocabulary size * embedding size, initialized to truncated_normal of tensorflow
+        # The bias shouldbe initialized to 0
+        
+        #SOLUTION:
+        
+         softmax_weights = tf.Variable(
             tf.truncated_normal([vocabulary_size, embedding_size],
                                 stddev=1.0 / math.sqrt(embedding_size)))
         softmax_biases = tf.Variable(tf.zeros([vocabulary_size]))
-        softmax_biases = tf.Variable(tf.zeros([vocabulary_size]))
-
+       
+        ### Enter code here to define the softmax loss function. Use the standard tensorflow loss function.
+          # the parameters of the loss function should include weights, biases, labels, inputs, num_sampled... ###
+          
+        #SOLUTION:
 
         loss = tf.reduce_mean(
           tf.nn.sampled_softmax_loss(weights=softmax_weights,
@@ -195,18 +217,23 @@ if __name__ == '__main__':
                          labels=train_labels,
                          inputs=embed,
                          num_sampled=num_sampled,
-                         num_classes=vocabulary_size)) # sampled softmax for large vocabulary size
+                         num_classes=vocabulary_size, name ='softmax_loss')) # sampled softmax for large vocabulary size
 
-        optimizer = tf.train.AdagradOptimizer(1.0).minimize(loss) #Used adagrad optimizer seemed to work better than Gradient Descent
-
-        # Compute the cosine similarity between minibatch examples and all embeddings.
+        ### Enter Code: for any methods of optimization Gradient Desent/ Adagrad Optimizer with a
+        #   learning rate of 1 to minimize the loss. ##
+        
+        #SOLUTION:
+        optimizer = tf.train.AdagradOptimizer(1.0).minimize(loss) 
+        
+        # Compute the cosine similarity between minibatch examples and all embeddings. 
+        # This section is not compulsary for beginners to know, as this section will be provided.
         norm = tf.sqrt(tf.reduce_sum(tf.square(embeddings), 1, keep_dims=True))
         normalized_embeddings = embeddings / norm
         valid_embeddings = tf.nn.embedding_lookup(
           normalized_embeddings, valid_dataset)
         similarity = tf.matmul(valid_embeddings, normalized_embeddings, transpose_b=True)
 
-      # Add variable initializer.
+      # The line below adds a global variable initializer
     init = tf.global_variables_initializer()
 
 
@@ -225,6 +252,7 @@ if __name__ == '__main__':
 
         # We perform one update step by evaluating the optimizer op (including it
         # in the list of returned values for session.run()
+        
         _, loss_val = session.run([optimizer, loss], feed_dict=feed_dict)
         average_loss += loss_val
 
