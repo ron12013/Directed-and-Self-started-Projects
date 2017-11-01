@@ -21,7 +21,7 @@ https://www.youtube.com/watch?v=nFTQ7kHQWtc&t=138s
 Apart from these there were many other sources of learning inluding the official website of Tensorflow, Numpy, Keras and so on...
 
 
-# Exercise 1: Getting familiar with Tensorlfow
+# Exercise 1: Getting familiar with Tensorflow
 The first Exercise was going through tensorflow and getting myself familiar with it. I followed the official tensorflow page where there were multiple exercises for beginners which would get them familiar with concepts like, placeholders, tensorflow session and so on.
 
 https://www.tensorflow.org/get_started/
