@@ -22,7 +22,8 @@ Apart from these there were many other sources of learning inluding the official
 
 
 # Exercise 1: Getting familiar with Tensorlfow
-The first Exercise was going through tensorflow and getting myself familiar with it. I followed the official tensorflow page where there were multiple exercises for beginners which would get them amiliar with concepts like, placeholders, tensorflow session and so on.
+The first Exercise was going through tensorflow and getting myself familiar with it. I followed the official tensorflow page where there were multiple exercises for beginners which would get them familiar with concepts like, placeholders, tensorflow session and so on.
+
 https://www.tensorflow.org/get_started/
 
 # 1 a - Logistic Regression with MNIST handwritten digits images
@@ -30,9 +31,16 @@ This exercise is about making an image classifier using logistic regression, we 
 The idea is getting familiar with placeholders and variables which hold the required tensors to get the logits, followed by finding the cross entropy loss which helps you get the batch. 
 
 That is followed by using gradient descent optimization which will help you reduce the loss.Then we launch a tensorflow session which which will help to calculate loss one batch at a time, after which we use the trained model with the test data to get the final accuracy.
+
 You will find the solution in the file  mnist_lr.py
+
 # 1 b - Convolutional Neural Networks with MNIST handwritten digits images
-This is the second exercise in order to get yourself familiar with tensorflow.
+This is the second exercise in order to get yourself familiar with tensorflow. Here we implement a  CNN (Convolutional Neural Networks)
+to classify images. In a CNN we build one layer on top of the other. Tensorflow's graph structure is benificial for a such a implementation. Convolutional Neural Nets are comparitively easy to understand compared to LSTM or GRU.
+
+There are many features of Tensorflow which will help you implement this such as, tensorflow's function for pooling (max pooling), relu and fully connected layer.
+
+The file cnn_mnist.py contains the solution.
 
 # Exercise 2: Word2vec (skipgram) model on latest Wikipedia dump
 This exercise involve downloading the latest wikipedia dump, and extracting a corpus out of it. Once you have that corpus you can use that to get word2vec embeddings of that corpus. 
@@ -51,5 +59,5 @@ We know that RNN (Recurrent Neural Networks) and LSTM (Long Short Term Memory) n
 In order to implement, you could use tensorflow's multi RNN cell function, using a GRU cell for each layer or you may use the standard RNN cell units of tensorflow. Now you use the tensorflow's RNN sequence to sequence model giving it the cell type (from the Multi RNN (GRU)), encoder inputs and decoder inputs as the parameters. This model first runs an RNN to encode the inputs of the encoer and then runs decoder which is initialized with the last encoder state on the inputs of the decoder. The decoder and the encoder share the same RNN cell type but they do not share the same set of parameters.
 
 The solution is contained in a folder Sequence_to_sequence_vanilla_implementation.
-The files data_utils.py and train.py deals with reading in the data and running the tnesorflow session.
+The files data_utils.py and train.py deals with reading in the data and running the tensorflow session.
 model.py contains the solution.
