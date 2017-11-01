@@ -36,7 +36,7 @@ You will find the solution in the file  mnist_lr.py
 
 # 1 b - Convolutional Neural Networks with MNIST handwritten digits images
 This is the second exercise in order to get yourself familiar with tensorflow. Here we implement a  CNN (Convolutional Neural Networks)
-to classify images. In a CNN we build one layer on top of the other. Tensorflow's graph structure is benificial for a such a implementation. Convolutional Neural Nets are comparitively easy to understand compared to LSTM or GRU.
+to classify images. In a CNN we build one layer on top of the other. Tensorflow's graph structure is benificial for a such an implementation. Convolutional Neural Nets are comparitively easy to understand compared to LSTM or GRU.
 
 There are many features of Tensorflow which will help you implement this such as, tensorflow's function for pooling (max pooling), relu and fully connected layer.
 
