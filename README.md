@@ -27,7 +27,9 @@ https://www.tensorflow.org/get_started/
 
 # 1 a - Logistic Regression with MNIST handwritten digits images
 This exercise is about making an image classifier using logistic regression, we classify hand written digits from 0-9 (MNIST dataset)
-The idea is getting familiar with placeholders and variables which hold the required tensors to get the logits, followed by finding the cross entropy loss which helps you get the batch. That is followed by using gradient descent optimization which will help you reduce the loss.Then we launch a tensorflow session which which will help to calculate loss one batch at a time, after which we use the trained model with the test data to get the final accuracy.
+The idea is getting familiar with placeholders and variables which hold the required tensors to get the logits, followed by finding the cross entropy loss which helps you get the batch. 
+
+That is followed by using gradient descent optimization which will help you reduce the loss.Then we launch a tensorflow session which which will help to calculate loss one batch at a time, after which we use the trained model with the test data to get the final accuracy.
 You will find the solution in the file  mnist_lr.py
 # 1 b - Convolutional Neural Networks with MNIST handwritten digits images
 This is the second exercise in order to get yourself familiar with tensorflow.
