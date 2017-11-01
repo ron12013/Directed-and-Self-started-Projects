@@ -23,6 +23,8 @@ y = tf.placeholder(tf.float32, shape=[None,10])
 # convolution --> relu activation---> maxpooling --> repeat till we get a fully connected layer --> softmax
 
 ### Enter code to define functions which will return a tensorflow variable for weight and bias given the shape of the variable.
+# SOLUTION:
+
 def weight_val(shape):
 	initial = tf.truncated_normal(shape, stddev = 0.1)
 	return tf.Variable(initial)
